@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest // 스프링부트 관련 컴포넌트 테스트할 때 붙여야 함, Ioc 컨테이너 작동시킴
 @AutoConfigureMockMvc // http 요청, 응답 테스트
-@Transactional // 실제로 테스트에서 발생한 DB 작업이 영구적으로 적용되지 않도록, test + 트랜잭션 => 자동롤백
+@Transactional // 실제로 테스트에서 발생한 DB 작업이 영구적으로 적용되지 않도록, @test + @Transactional => 자동롤백
 @ActiveProfiles("test") // application-test.yml 을 활성화 시킨다.
 public class MemberControllerTests {
 	@Autowired
@@ -65,9 +65,9 @@ public class MemberControllerTests {
 	// @Rollback(value = false) // DB에 흔적이 남는다.
 	@DisplayName("회원가입")
 	void t002() throws Exception {
-		// WHEN
+		// WHEN - 회원가입 시도 자동화
 		ResultActions resultActions = mvc
-				.perform(post("/member/join")
+				.perform(post("/member/join") // 해당 url을 아래 3개을 갖고 post로 전송
 						.with(csrf()) // CSRF 키 생성
 						.param("username", "user10")
 						.param("password", "1234")
@@ -76,13 +76,14 @@ public class MemberControllerTests {
 
 		// THEN
 		resultActions
-				.andExpect(handler().handlerType(MemberController.class))
-				.andExpect(handler().methodName("join"))
-				.andExpect(status().is3xxRedirection());
+				.andExpect(handler().handlerType(MemberController.class)) // MemberController가 핸들러일 때 올바르게 처리된 것이라 기대
+				.andExpect(handler().methodName("join")) // MemberController의 join 메서드가 호출되야 함
+				.andExpect(status().is3xxRedirection()); // 메서드 리턴 후 300 redirect로 끝나야 함
 
 		Member member = memberService.findByUsername("user10").orElse(null);
+		// 회원가입 잘 처리됐는지 확인- username "user10"이 있는지 확인하고 없으면 null
 
-		assertThat(member).isNotNull();
+		assertThat(member).isNotNull(); // null이 아니면 성공
 	}
 
 	@Test
