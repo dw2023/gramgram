@@ -28,6 +28,6 @@ public class HomeController {
             sb.append(String.format("%s: %s\n", attributeName, attributeValue));
         }
 
-        return sb.toString();
+        return sb.toString().replaceAll("\n", "<br>"); // 화면에 잘 보이도록 줄바꿈
     }
 }

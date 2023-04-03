@@ -21,5 +21,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         Member member = memberRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("username(%s) not found".formatted(username)));
 
         return new User(member.getUsername(), member.getPassword(), member.getGrantedAuthorities());
+        // "User: Security가 인정하는 회원정보를 담는 규격" 에 담아 리턴하면 이것이 세션에 들어감
     }
 }
