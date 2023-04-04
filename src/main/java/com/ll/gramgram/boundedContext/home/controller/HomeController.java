@@ -15,8 +15,6 @@ import java.util.Enumeration;
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
-    private final MemberService memberService;
-
     @GetMapping("/")
     public String showMain() {
         return "usr/home/main";
