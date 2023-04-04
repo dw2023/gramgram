@@ -74,7 +74,7 @@
 <main layout:fragment="main"></main>
 
 <script th:inline="javascript">
-  // 타임리프 문법(파라미터, ? 뒤에 입력된 매개변수들 = params)
+  // 타임리프 문법(params = 파라미터(? 뒤에 입력된 매개변수들) or 없으면 null)
   const params = /*[[ ${param} ]]*/ null;
 
   // 메시지가 있을 때 창 띄우기
