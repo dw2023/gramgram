@@ -1,6 +1,5 @@
 package com.ll.gramgram.boundedContext.member.controller;
 
-import com.ll.gramgram.boundedContext.member.entity.Member;
 import com.ll.gramgram.boundedContext.member.service.MemberService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -10,12 +9,12 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import com.ll.gramgram.standard.util.Ut;
 
-import java.security.Principal;
 
 @Controller
 @RequestMapping("/member")
@@ -44,7 +43,8 @@ public class MemberController {
     public String join(@Valid JoinForm joinForm) {
         memberService.join(joinForm.getUsername(), joinForm.getPassword());
 
-        return "redirect:/";
+        return "redirect:/member/login?msg=" + Ut.url.encode("회원가입이 완료되었습니다.\n로그인 후 이용해주세요.");
+        // url에 한글을 사용할 때는 url 인코딩해야 함
     }
 
     @PreAuthorize("isAnonymous()")

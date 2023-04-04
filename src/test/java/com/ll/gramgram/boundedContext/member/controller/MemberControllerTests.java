@@ -79,7 +79,8 @@ public class MemberControllerTests {
 		resultActions
 				.andExpect(handler().handlerType(MemberController.class)) // MemberController가 핸들러일 때 올바르게 처리된 것이라 기대
 				.andExpect(handler().methodName("join")) // MemberController의 join 메서드가 호출되야 함
-				.andExpect(status().is3xxRedirection()); // 메서드 리턴 후 300 redirect로 끝나야 함
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrlPattern("/member/login?msg=**"));
 
 		Member member = memberService.findByUsername("user10").orElse(null);
 		// 회원가입 잘 처리됐는지 확인- username "user10"이 있는지 확인하고 없으면 null
